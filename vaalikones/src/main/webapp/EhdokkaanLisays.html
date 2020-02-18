@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Ehdokkaan Lisays</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<div id="container">
+	<h1>Ehdokkaan lisäys</h1>
+	<body>
+		<table>
+			<tbody>
+				<!-- 			<div id='yksikysymys'></div> -->
+				<tr>
+					<td>
+						<form id='lomake' onsubmit="return false;">
+				<table>
+					<tbody>
+						<tr>
+							<td>Sukunimi</td>
+							<td><input type="text" name="sukunimi"
+								placeholder="sukunimi" value="" /></td>
+						</tr>
+						<tr>
+							<td>Etunimi</td>
+							<td><input type="text" name="etunimi" placeholder="etunimi"
+								value="" /></td>
+						</tr>
+						<tr>
+							<td>Puolue</td>
+							<td><input type="text" name="puolue" placeholder="puolue"
+								value="" /></td>
+						</tr>
+						<tr>
+							<td>Kotipaikkakunta</td>
+							<td><input type="text" name="kotipaikkakunta"
+								placeholder="kotipaikkakunta" value="" /></td>
+						</tr>
+						<tr>
+							<td>Ikä</td>
+							<td><input type="number" name="ika" placeholder="0-9" value="" /></td>
+						</tr>
+						<tr>
+							<td>Miksi eduskuntaan?</td>
+							<td><input type="text" name="miksiEduskuntaan"
+								placeholder="miksi eduskuntaan" value="" /></td>
+						</tr>
+						<tr>
+							<td>Mitä asioita haluat edustaa?</td>
+							<td><input type="text" name="mitahaluat"
+								placeholder="mitä asioita edustat" value="" /></td>
+						</tr>
+						<tr>
+							<td>Ammatti</td>
+							<td><input type="text" name="ammatti" placeholder="ammatti"
+								value="" /></td>
+						</tr>
+						<tr>
+							<td><br> <a href="/YllapitoSivu.jsp">Ylläpitosivu</a></td>
+						</tr>
+					</tbody>
+				</table>
+						</form>
+					</td>
+				</tr>
+				<tr>
+					<td><button onclick="lahetaehdokas();">Lisää</button></td>
+				</tr>
+			</tbody>
+		</table>
+</div>
+</body>
+
+<script>
+	function lahetaehdokas() {
+
+		var lomake = document.getElementById("lomake");
+
+		var ehdokas = new Object();
+		
+		ehdokas.ammatti = lomake.ammatti.value;
+		ehdokas.mitaAsioitaHaluatEdistaa = lomake.mitahaluat.value;
+		ehdokas.miksiEduskuntaan = lomake.miksiEduskuntaan.value;
+		ehdokas.ika = lomake.ika.value;
+		ehdokas.kotipaikkakunta = lomake.kotipaikkakunta.value;
+		ehdokas.puolue = lomake.puolue.value;
+		ehdokas.etunimi = lomake.etunimi.value;
+		ehdokas.sukunimi = lomake.sukunimi.value;
+
+
+
+		var jsonEhdokas = JSON.stringify(ehdokas);
+
+		var xhttp = new XMLHttpRequest();
+
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var palautettu = JSON.parse(this.responseText);
+				// 				document.getElementById("yksikysymys").innerHTML = "Lisätty kysymys: "
+				// 						+ palautettu.kysymys;
+			}
+		};
+
+		xhttp.open("POST", "./rest/kysymyspalvelu/lisaaEhdokas", true);
+		//		xhttp.setRequestHeader("Content-type","text/plain");
+		xhttp.setRequestHeader("Content-type", "application/json");
+		//		xmlhttp.setRequestHeader("Data-type","json");
+		xhttp.send(jsonEhdokas);
+
+// 		window.location = "//localhost:8080/EhdokkaanLisays.html";
+
+	}
+
+	// 	function haekaikkikysymykset() {
+
+	// 		var xhttp = new XMLHttpRequest();
+
+	// 		xhttp.onreadystatechange = function() {
+
+	// 			var y=this.responseText;
+	// 			var x=JSON.parse(y);
+	// 			var s="<ol><li>"+x.kysymys"<li></ol>"
+	// 			document.getElementById("kysymyslista".inner)HTML=s;
+	// 		};
+
+	// 		xhttp.open("GET", "./rest/kysymyspalvelu/haeKysymykset", true);
+	// 		xhttp.send();
+
+	// 	}
+</script>
+</html>
